@@ -1,0 +1,763 @@
+{
+	"info": {
+		"_postman_id": "caf978a3-4085-4fbf-a75a-5832187bfa3e",
+		"name": "APKPure",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "APKPure Get App Detail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8d20f919-c72b-4bca-94ac-0c67f1043910",
+						"exec": [
+							"// Fetch the Pako library\r",
+							"pm.sendRequest(\"https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js\", (err, res) => {\r",
+							"    if (err) {\r",
+							"        console.error(\"Error fetching Pako library:\", err);\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    // Load the Pako library\r",
+							"    eval(res.text());\r",
+							"\r",
+							"    // Get the raw JSON payload from the Body tab\r",
+							"    const payload = pm.request.body.raw;\r",
+							"\r",
+							"    // Compress the payload with Pako (Gzip)\r",
+							"    const compressedPayload = pako.gzip(payload);\r",
+							"\r",
+							"    // Convert the compressed payload to a Base64 string\r",
+							"    const compressedBase64 = btoa(String.fromCharCode.apply(null, compressedPayload));\r",
+							"\r",
+							"    // Update the request body with the compressed payload\r",
+							"    pm.request.body.update(Buffer.from(atob(compressedBase64)));\r",
+							"\r",
+							"    // Ensure the proper Content-Encoding header is set\r",
+							"    pm.request.headers.add({\r",
+							"        key: \"Content-Encoding\",\r",
+							"        value: \"gzip\"\r",
+							"    });\r",
+							"\r",
+							"    console.log(\"Payload successfully compressed and updated!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0b820c8b-e16d-4710-b3d4-1b419e460443",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "d08c2d8e-2df1-4a81-9d72-a2cccdad1f61",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"user-agent": true,
+					"host": true,
+					"content-length": true,
+					"content-type": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Dalvik/2.1.0 (Linux; U; Android 14; Redmi Note 7 Pro Build/AP2A.240905.003); APKPure/3.20.33 (Aegon)",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "user-agent-webview",
+						"value": "Mozilla/5.0 (Linux; Android 14; Redmi Note 7 Pro Build/AP2A.240905.003; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.6778.200 Mobile Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "ual-access-businessid",
+						"value": "projecta",
+						"type": "text"
+					},
+					{
+						"key": "ual-access-projecta",
+						"value": "{ \"device_info\": { \"abis\": [ \"arm64-v8a\", \"armeabi-v7a\", \"armeabi\" ], \"android_id\": \"5f0ddefa949d96e0\", \"brand\": \"Xiaomi\", \"country\": \"India\", \"country_code\": \"IN\", \"imei\": \"\", \"language\": \"en-IN\", \"manufacturer\": \"Xiaomi\", \"mode\": \"Redmi Note 7 Pro\", \"os_ver\": \"34\", \"os_ver_name\": \"14\", \"platform\": 1, \"product\": \"afterlife_violet\", \"screen_height\": 2134, \"screen_width\": 1080 }, \"host_app_info\": { \"build_no\": \"450\", \"channel\": \"\", \"md5\": \"888a5ec5d2be509cf92d1ed49d9e0993\", \"pkg_name\": \"com.apkpure.aegon\", \"sdk_ver\": \"3.20.33\", \"version_code\": 3203347, \"version_name\": \"3.20.33\" }, \"net_info\": { \"carrier_code\": 0, \"ipv4\": \"127.0.0.1\", \"ipv6\": \"\", \"mac_address\": \"null\", \"net_type\": 1, \"use_vpn\": true, \"wifi_bssid\": \"02:00:00:00:00:00\", \"wifi_ssid\": \"\\u003cunknown ssid\\u003e\" }, \"user_info\": { \"auth_key\": \"qNKrYmW8SSUqJ73k3P2yfMxRTo3sJTR\", \"country\": \"India\", \"country_code\": \"\", \"guid\": \"\", \"language\": \"en-IN\", \"qimei\": \"2e3216b691e61d9ab716cbd310001cd19109\", \"qimei_token\": \"\", \"user_id\": \"\", \"uuid\": \"b3851183-9fef-4a3d-a61f-32f41778a253\" } }",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"package_name\": \"com.google.android.youtube\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v3/get_app_detail"
+			},
+			"response": []
+		},
+		{
+			"name": "APKPure Get Batch App Detail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8d20f919-c72b-4bca-94ac-0c67f1043910",
+						"exec": [
+							"// Fetch the Pako library\r",
+							"pm.sendRequest(\"https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js\", (err, res) => {\r",
+							"    if (err) {\r",
+							"        console.error(\"Error fetching Pako library:\", err);\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    // Load the Pako library\r",
+							"    eval(res.text());\r",
+							"\r",
+							"    // Get the raw JSON payload from the Body tab\r",
+							"    const payload = pm.request.body.raw;\r",
+							"\r",
+							"    // Compress the payload with Pako (Gzip)\r",
+							"    const compressedPayload = pako.gzip(payload);\r",
+							"\r",
+							"    // Convert the compressed payload to a Base64 string\r",
+							"    const compressedBase64 = btoa(String.fromCharCode.apply(null, compressedPayload));\r",
+							"\r",
+							"    // Update the request body with the compressed payload\r",
+							"    pm.request.body.update(Buffer.from(atob(compressedBase64)));\r",
+							"\r",
+							"    // Ensure the proper Content-Encoding header is set\r",
+							"    pm.request.headers.add({\r",
+							"        key: \"Content-Encoding\",\r",
+							"        value: \"gzip\"\r",
+							"    });\r",
+							"\r",
+							"    console.log(\"Payload successfully compressed and updated!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0b820c8b-e16d-4710-b3d4-1b419e460443",
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>Field</th>\r",
+							"        <th>Value</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Title</td>\r",
+							"        <td>{{response.app_detail.title}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Package Name</td>\r",
+							"        <td>{{response.app_detail.package_name}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Version Code</td>\r",
+							"        <td>{{response.app_detail.version_code}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Version Name</td>\r",
+							"        <td>{{response.app_detail.version_name}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Review Stars</td>\r",
+							"        <td>{{response.app_detail.review_stars}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Description</td>\r",
+							"        <td>{{response.app_detail.description}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Developer</td>\r",
+							"        <td>{{response.app_detail.developer}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Show Comment Score</td>\r",
+							"        <td>{{response.app_detail.is_show_comment_score}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Price</td>\r",
+							"        <td>{{response.app_detail.price}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Introduction</td>\r",
+							"        <td>{{response.app_detail.introduction}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Category Name</td>\r",
+							"        <td>{{response.app_detail.category_name}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Permissions</td>\r",
+							"        <td>{{response.app_detail.permissions}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Off Download</td>\r",
+							"        <td>{{response.app_detail.is_off_download}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Collect</td>\r",
+							"        <td>{{response.app_detail.is_collect}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Follow</td>\r",
+							"        <td>{{response.app_detail.is_follow}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Free</td>\r",
+							"        <td>{{response.app_detail.is_free}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Ad Supported</td>\r",
+							"        <td>{{response.app_detail.is_ad_supported}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Official</td>\r",
+							"        <td>{{response.app_detail.is_official}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Ad</td>\r",
+							"        <td>{{response.app_detail.is_ad}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Show GP Icon</td>\r",
+							"        <td>{{response.app_detail.is_show_gp_icon}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Pre Register</td>\r",
+							"        <td>{{response.app_detail.is_pre_register}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Has Version</td>\r",
+							"        <td>{{response.app_detail.has_version}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is A P K S</td>\r",
+							"        <td>{{response.app_detail.is_a_p_ks}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is O B B</td>\r",
+							"        <td>{{response.app_detail.is_o_b_b}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Apk Type</td>\r",
+							"        <td>{{response.app_detail.apk_type}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Rank</td>\r",
+							"        <td>{{response.app_detail.rank}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>My Score</td>\r",
+							"        <td>{{response.app_detail.my_score}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"id": "08181440-ac1d-4fbc-8372-afcabf3dfa9d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Dalvik/2.1.0 (Linux; U; Android 14; Redmi Note 7 Pro Build/AP2A.240905.003); APKPure/3.20.33 (Aegon)",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip",
+						"type": "text"
+					},
+					{
+						"key": "user-agent-webview",
+						"value": "Mozilla/5.0 (Linux; Android 14; Redmi Note 7 Pro Build/AP2A.240905.003; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.6778.200 Mobile Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "ual-access-businessid",
+						"value": "projecta",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"package_names\": [\r\n\"com.apkpure.aegon\",\r\n\"com.nemo.vidmate\",\r\n\"com.whatsapp\",\r\n\"com.instagram.android\",\r\n\"com.facebook.orca\",\r\n\"com.facebook.katana\",\r\n\"com.android.vending\",\r\n\"com.dts.freefireth\",\r\n\"com.tencent.ig\",\r\n\"com.ipankstudio.lk21\",\r\n\"com.google.android.youtube\",\r\n\"com.zhiliaoapp.musically\",\r\n\"com.roblox.client\",\r\n\"com.video.fun.app\",\r\n\"com.lulu.lulubox\",\r\n\"com.tencent.iglite\",\r\n\"com.pubg.krmobile\",\r\n\"com.android.chrome\",\r\n\"com.netflix.mediaclient\",\r\n\"com.facebook.lite\",\r\n\"com.snapchat.android\",\r\n\"com.google.android.apps.maps\",\r\n\"com.supercell.brawlstars\",\r\n\"jp.konami.pesam\",\r\n\"com.lemon.lvoverseas\",\r\n\"com.lenovo.anyshare.gps\",\r\n\"com.whatsapp.w4b\",\r\n\"com.dts.freefiremax\",\r\n\"daniillnull.nulls.brawlstars\",\r\n\"com.spotify.music\",\r\n\"com.ss.android.ugc.trill\",\r\n\"com.supercell.clashofclans\",\r\n\"com.twitter.android\",\r\n\"com.mobile.legends\",\r\n\"com.vanced.android.youtube\",\r\n\"org.telegram.messenger\",\r\n\"com.activision.callofduty.shooter\",\r\n\"com.google.android.googlequicksearchbox\",\r\n\"ru.aaaaaaaf.installer\",\r\n\"com.taurus.app.android\",\r\n\"com.snaptube.premium\",\r\n\"com.happymod.apk\",\r\n\"com.kiloo.subwaysurf\",\r\n\"com.nianticlabs.pokemongo\",\r\n\"app.hunter.com\",\r\n\"com.nexstreaming.app.kinemasterfree\",\r\n\"com.google.android.apps.photos\",\r\n\"com.google.android.gsf.login\",\r\n\"com.innersloth.spacemafia\",\r\n\"com.kitkagames.fallbuddies\",\r\n\"com.ea.gp.fifamobile\",\r\n\"com.google.android.gm\",\r\n\"com.miniclip.eightballpool\",\r\n\"com.estrongs.android.pop\",\r\n\"com.mxtech.videoplayer.ad\",\r\n\"com.UCMobile.intl\",\r\n\"com.facebook.mlite\",\r\n\"com.alibaba.aliexpresshd\",\r\n\"com.google.android.play.games\",\r\n\"com.google.android.gms\",\r\n\"com.viber.voip\",\r\n\"com.firsttouchgames.dls3\",\r\n\"com.supercell.clashroyale\",\r\n\"com.google.android.apps.docs\",\r\n\"ru.zdevs.zarchiver\",\r\n\"us.zoom.videomeetings\",\r\n\"com.discord\",\r\n\"com.google.android.apps.translate\",\r\n\"com.pinterest\",\r\n\"com.google.android.inputmethod.latin\",\r\n\"com.swuwb.jbjtj\",\r\n\"com.firsttouchgames.dls7\",\r\n\"com.aniplex.fategrandorder\",\r\n\"com.neptune.domino\",\r\n\"com.olzhas.carparking.multyplayer\",\r\n\"com.opera.mini.native\",\r\n\"com.alightcreative.motion\",\r\n\"com.tocaboca.tocalifeworld\",\r\n\"com.amazon.avod.thirdpartyclient\",\r\n\"com.aniplex.fategrandorder.en\",\r\n\"com.minecraftpe.minecraft.original.free\",\r\n\"com.lulu.luluboxpro\",\r\n\"com.enflick.android.TextNow\",\r\n\"com.makslup.tontonangawesegerpikir\",\r\n\"com.imo.android.imoim\",\r\n\"apps.hunter.com\",\r\n\"com.microsoft.office.officehubrow\",\r\n\"org.hola\",\r\n\"com.buffbuff.community\",\r\n\"com.king.candycrushsaga\",\r\n\"com.google.android.youtube.tv\",\r\n\"com.vng.pubgmobile\",\r\n\"com.ea.gp.fifaworld\",\r\n\"app.beckirunscal.edowmtemps\",\r\n\"com.blockchainvault\",\r\n\"com.google.android.marvin.talkback\",\r\n\"com.appsomniacs.da2\",\r\n\"air.com.lunime.gachalife\",\r\n\"org.mozilla.firefox\",\r\n\"com.axlebolt.standoff2\",\r\n\"com.dvloper.granny\",\r\n\"com.google.android.apps.messaging\",\r\n\"com.truecaller\",\r\n\"com.google.android.tts\",\r\n\"com.lazada.android\",\r\n\"com.studiowildcard.wardrumstudios.ark\",\r\n\"com.epicgames.fortnite\",\r\n\"in.amazon.mShop.android.shopping\",\r\n\"com.shazam.android\",\r\n\"com.nexon.fmk\",\r\n\"com.disney.disneyplus\",\r\n\"com.google.android.apps.youtube.mango\",\r\n\"com.adobe.lrmobile\",\r\n\"com.supercell.hayday\",\r\n\"io.faceapp\",\r\n\"jp.naver.line.android\",\r\n\"com.google.android.apps.tachyon\",\r\n\"com.amazon.mShop.android.shopping\",\r\n\"video.like\",\r\n\"com.levelinfinite.sgameGlobal.midaspay\",\r\n\"com.ForgeGames.SpecialForcesGroup2\",\r\n\"com.google.android.ims\",\r\n\"com.zhiliaoapp.musically.go\",\r\n\"ru.aaaaaaci.installer\",\r\n\"com.waze\",\r\n\"com.camerasideas.instashot\",\r\n\"com.LanPiaoPiao.PlantsVsZombiesRH\",\r\n\"com.google.android.projection.gearhead\",\r\n\"com.garena.game.codm\",\r\n\"com.sika524.android.quickshortcut\",\r\n\"com.netease.g91na.gb\",\r\n\"com.android.vending.billing.InAppBillingService.CRAC\",\r\n\"com.tinybuildgames.helloneighbor\",\r\n\"com.vuclip.viu\",\r\n\"com.microsoft.amp.apps.bingnews\",\r\n\"com.google.android.GoogleCamera\",\r\n\"com.craftsman.go\",\r\n\"jp.garud.ssimulator\",\r\n\"com.adobe.reader\",\r\n\"com.anddoes.launcher\",\r\n\"com.microsoft.office.word\",\r\n\"com.maleo.bussimulatorid\",\r\n\"com.paypal.android.p2pmobile\",\r\n\"com.microsoft.teams\",\r\n\"com.enflick.android.tn2ndLine\",\r\n\"com.gameloft.android.ANMP.GloftA9HM\",\r\n\"com.activision.callofduty.warzone\",\r\n\"com.riotgames.league.teamfighttactics\",\r\n\"com.ImpulseGaming.GTAVMobile\",\r\n\"com.bigwinepot.nwdn.international\",\r\n\"net.zedge.android\",\r\n\"com.dewmobile.kuaiya.play\",\r\n\"org.videolan.vlc\",\r\n\"cn.xender\",\r\n\"com.fast.free.unblock.secure.vpn\",\r\n\"com.alibaba.intl.android.apps.poseidon\",\r\n\"com.fingersoft.hillclimb\",\r\n\"com.google.earth\",\r\n\"com.microsoft.office.outlook\",\r\n\"com.gmail.heagoo.apkeditor\",\r\n\"com.yy.hiyo\",\r\n\"com.kwai.bulldog\",\r\n\"omegle.tv\",\r\n\"cn.wps.moffice_eng\",\r\n\"com.truedevelopersstudio.automatictap.autoclicker\",\r\n\"com.superking.ludo.star\",\r\n\"com.kcstream.cing\",\r\n\"com.afwsamples.testdpc\",\r\n\"com.bstar.intl\",\r\n\"com.google.android.music\",\r\n\"org.ppsspp.ppsspp\",\r\n\"com.miHoYo.GenshinImpact\",\r\n\"com.IngeniusStudios.CollegeBrawlAndroid\",\r\n\"com.wb.goog.mkx\",\r\n\"com.ea.game.nfs14_row\",\r\n\"com.haegin.playtogether\",\r\n\"com.vkontakte.android\",\r\n\"com.nekki.shadowfight\",\r\n\"com.uc.browser.en\",\r\n\"com.mojang.minecrafttrialpe\",\r\n\"com.carxtech.sr\",\r\n\"com.makemytrip\",\r\n\"com.google.android.apps.meetings\",\r\n\"com.apkpure.installer\",\r\n\"com.tencent.mm\",\r\n\"com.skype.raider\",\r\n\"com.duolingo\",\r\n\"com.soundcloud.android\",\r\n\"com.FadyStudios.AirWar\",\r\n\"devian.tubemate.v3\",\r\n\"com.lbe.parallel.intl\",\r\n\"com.vng.mlbbvn\",\r\n\"com.opera.browser\",\r\n\"com.linecorp.b612.android\",\r\n\"com.titan.cd.gb\",\r\n\"com.imaginstudio.imagetools.pixellab\",\r\n\"com.djliker\",\r\n\"com.biomes.vanced\",\r\n\"com.esaba.downloader\",\r\n\"com.imangi.templerun\",\r\n\"com.ngame.allstar.eu\",\r\n\"com.FadyStudios.CityCarRacing3DGame\",\r\n\"com.neptune.dominogl\",\r\n\"com.ction.playergames\",\r\n\"com.zzkko\",\r\n\"com.garena.game.kgvn\",\r\n\"com.brave.browser\",\r\n\"com.microsoft.translator\",\r\n\"sg.bigo.live\",\r\n\"com.google.android.apps.youtube.music\",\r\n\"jp.co.nexon.fmja\",\r\n\"com.google.android.talk\",\r\n\"cn.gloud.client.en\",\r\n\"com.netease.chiji\",\r\n\"com.kompasproductions.summertimesaga\",\r\n\"cm.aptoide.pt\",\r\n\"com.gameloft.android.ANMP.GloftA8HM\",\r\n\"com.aim.racing\",\r\n\"com.zuuks.bus.simulator.ultimate\",\r\n\"devian.tubemate.home\",\r\n\"com.linkedin.android\",\r\n\"com.blued.international\",\r\n\"com.shopee.ph\",\r\n\"com.yahoo.mobile.client.android.mail\",\r\n\"wp.wattpad\",\r\n\"com.daaw.avee\",\r\n\"com.movile.playkids.pkxd\",\r\n\"com.duapps.recorder\",\r\n\"com.riotgames.league.wildrift\",\r\n\"com.wildspike.wormszone\",\r\n\"tv.twitch.android.app\",\r\n\"com.instagram.lite\",\r\n\"xyz.aethersx2.android\",\r\n\"air.com.hypah.io.slither\",\r\n\"com.pegipegi.android\",\r\n\"com.f2f.Gogo.Live\",\r\n\"eu.tsoml.graphicssettings\",\r\n\"com.groundhog.mcpemaster\",\r\n\"com.termux\",\r\n\"com.fungames.sniper3d\",\r\n\"com.sec.android.easyMover\",\r\n\"com.niksoftware.snapseed\",\r\n\"com.ea.game.pvzfree_row\",\r\n\"com.intsig.camscanner\",\r\n\"com.mojang.minecraftearth\",\r\n\"com.robtopx.geometryjumplite\",\r\n\"com.nvidia.geforcenow\",\r\n\"com.pubg.imobile\",\r\n\"com.tester.wpswpatester\",\r\n\"com.utorrent.client\",\r\n\"com.youmusic.magictiles\",\r\n\"com.google.android.videos\",\r\n\"com.skgames.trafficrider\",\r\n\"com.herogame.gplay.hopelessland\",\r\n\"com.rsupport.mvagent\",\r\n\"jp.ne.ibis.ibispaintx.app\",\r\n\"com.gameloft.android.ANMP.GloftGGHM\",\r\n\"com.google.android.contacts\",\r\n\"com.quvideo.xiaoying\",\r\n\"com.alphainventor.filemanager\",\r\n\"com.google.android.calendar\",\r\n\"com.pockybop.sociali\",\r\n\"com.firsttouchgames.story\",\r\n\"com.sandboxol.blockymods\",\r\n\"com.xiaomi.midrop\",\r\n\"com.life.palm\",\r\n\"com.mi.android.globalFileexplorer\",\r\n\"com.bfbrowser.powersurf\",\r\n\"eu.bandainamcoent.tekkenmobile\",\r\n\"pl.rs.sip.softphone\",\r\n\"com.gameloft.android.ANMP.GloftOLHM\",\r\n\"com.MadOut.BIG\",\r\n\"com.shopee.id\",\r\n\"com.mytel.myid\",\r\n\"com.yandex.browser\",\r\n\"com.tubitv\",\r\n\"com.imangi.templerun2\",\r\n\"org.zwanoo.android.speedtest\",\r\n\"videoeditor.videorecorder.screenrecorder\",\r\n\"com.rockstargames.gtavmanual\",\r\n\"com.google.android.apps.walletnfcrel\",\r\n\"com.chaozhuo.gameassistant\",\r\n\"com.frontrow.vlog\",\r\n\"com.evozi.injector\",\r\n\"com.zakg.scaryteacher.hellgame\",\r\n\"com.jabong.android\",\r\n\"com.supercell.squad\",\r\n\"com.google.android.webview\",\r\n\"com.reddit.frontpage\",\r\n\"com.bluepotiongames.dhd.google\",\r\n\"com.enp.abyss.google\",\r\n\"com.garena.game.kgth\",\r\n\"com.grabtaxi.passenger\",\r\n\"com.outfit7.mytalkingtomfriends\",\r\n\"com.tencent.ibg.joox\",\r\n\"ai.totok.chat\",\r\n\"labalabi.whatsapp\",\r\n\"com.amazon.kindle\",\r\n\"com.rarlab.rar\",\r\n\"com.cleanmaster.mguard\",\r\n\"com.moonactive.coinmaster\",\r\n\"mega.privacy.android.app\",\r\n\"com.playit.videoplayer\",\r\n\"com.playrix.homescapes\",\r\n\"hotspotshield.android.vpn\",\r\n\"com.globe.gcash.android\",\r\n\"me.way_in.proffer\",\r\n\"com.miniclip.carrom\",\r\n\"com.samsung.android.gametuner.thin\",\r\n\"com.dianyun.chikii\",\r\n\"com.dalcomsoft.ssb\",\r\n\"com.dvloper.grannychaptertwo\",\r\n\"com.urap.urjj\",\r\n\"com.ubercab\",\r\n\"com.igg.android.lordsmobile\",\r\n\"com.smule.singandroid\",\r\n\"org.xbmc.kodi\",\r\n\"com.kwai.video\",\r\n\"me.zepeto.main\",\r\n\"com.microsoft.office.excel\",\r\n\"com.xvideostudio.videoeditor\",\r\n\"com.king.candycrushsodasaga\",\r\n\"com.adobe.psmobile\",\r\n\"xnxxmobile.app\",\r\n\"com.azarlive.android\",\r\n\"com.amanotes.beathopper\",\r\n\"com.jio.myjio\",\r\n\"com.teslacoilsw.launcher\",\r\n\"com.hbo.hbonow\",\r\n\"com.hecorat.screenrecorder.free\",\r\n\"com.ea.gp.simsmobile\",\r\n\"co.brainly\",\r\n\"com.flipkart.android\",\r\n\"video.downloader.videodownloader\",\r\n\"net.apex_designs.payback2\",\r\n\"com.grindrapp.android\",\r\n\"in.sweatco.app\",\r\n\"com.proximabeta.mf.uamo\",\r\n\"com.google.android.apps.docs.editors.docs\",\r\n\"air.com.lunime.gachaclub\",\r\n\"com.zing.zalo\",\r\n\"com.os.mincraftbuildinggame.mcraft\",\r\n\"com.google.android.apps.plus\",\r\n\"com.pazugames.avatarworld\",\r\n\"com.google.ar.core\",\r\n\"com.heagoo.apkeditor\",\r\n\"com.fingersoft.hcr2\",\r\n\"com.openai.chatgpt\",\r\n\"com.PlayMax.playergames\",\r\n\"com.and.games505.Terraria\",\r\n\"zombie.survival.craft.z\",\r\n\"com.firsttouchgames.dlsa\",\r\n\"site.realanime.animlov.animlov\",\r\n\"com.xiaomi.smarthome\",\r\n\"pi.browser\",\r\n\"com.dywx.larkplayer\",\r\n\"com.adsk.sketchbook\",\r\n\"com.google.android.gsf\",\r\n\"blibli.mobile.commerce\",\r\n\"com.sega.sonicdash\",\r\n\"com.dogs.nine\",\r\n\"com.google.android.apps.youtube.kids\",\r\n\"com.sneig.livedrama\",\r\n\"com.videoeditorpro.android\",\r\n\"com.cmplay.tiles2\",\r\n\"org.thoughtcrime.securesms\",\r\n\"com.outfit7.mytalkingtomfree\",\r\n\"com.playmini.miniworld\",\r\n\"com.nekki.shadowfight3\",\r\n\"com.microsoft.skydrive\",\r\n\"com.zuuks.truck.simulator.ultimate\",\r\n\"ru.iptvremote.android.iptv\",\r\n\"com.simolex.fastestfree\",\r\n\"it.gipsysoft.mypocketgirl\",\r\n\"com.ultimategamestudio.mcpecenter.mods\",\r\n\"com.playrix.gardenscapes\",\r\n\"com.defianttech.diskdigger\",\r\n\"com.masomo.headball2\",\r\n\"com.commsource.beautyplus\",\r\n\"com.cyrust.fftools\",\r\n\"com.Neurononfire.SupremeDuelist\",\r\n\"com.LinkedSquad.SchoolBoyRunaway\",\r\n\"com.outfit7.mytalkingangelafree\",\r\n\"es.socialpoint.DragonCity\",\r\n\"com.kingroot.kinguser\",\r\n\"com.microsoft.office.powerpoint\",\r\n\"com.ss.android.ugc.trill.go\",\r\n\"com.gameloft.android.ANMP.GloftM5HM\",\r\n\"free.tube.premium.advanced.tuber\",\r\n\"com.ludashi.dualspace\",\r\n\"com.jio.jioplay.tv\",\r\n\"com.cleartrip.android\",\r\n\"com.lockwoodpublishing.avakinlife\",\r\n\"com.fortune.young.live\",\r\n\"com.scee.psxandroid\",\r\n\"com.gamefun.apk2u\",\r\n\"com.playrix.township\",\r\n\"net.mobigame.zombietsunami\",\r\n\"org.thunderdog.challegram\",\r\n\"com.duokan.phone.remotecontroller\",\r\n\"co.solovpn\",\r\n\"com.launcher.ios11.iphonex\",\r\n\"com.free.vpn.super.hotspot.open\",\r\n\"org.getlantern.lantern\",\r\n\"com.criticalforceentertainment.criticalops\",\r\n\"com.cyberlink.powerdirector.DRA140225_01\",\r\n\"com.ea.game.pvz2_row\",\r\n\"com.maxgames.stickwarlegacy\",\r\n\"com.fgol.HungrySharkEvolution\",\r\n\"com.yalla.yallagames\",\r\n\"com.dv.adm\",\r\n\"com.bandainamcoent.dblegends_ww\",\r\n\"com.google.android.apps.docs.editors.sheets\",\r\n\"com.ea.gp.nbamobile\",\r\n\"com.microsoft.emmx\",\r\n\"photo.editor.photoeditor.photoeditorpro\",\r\n\"com.google.android.apps.classroom\",\r\n\"com.ngc.FastTvLitePlus\",\r\n\"com.mmircil.cnb2\",\r\n\"com.kissapp.appserversminecraft\",\r\n\"com.campmobile.snow\",\r\n\"com.sanhe.clipclaps\",\r\n\"com.dropbox.android\",\r\n\"com.rababagames.hajwalah\",\r\n\"com.lightneer.goodslice\",\r\n\"com.jiubang.alock\",\r\n\"com.thanksgod.gaming.mod_ff_skin\",\r\n\"com.acmarket.ac.storeismine\",\r\n\"com.illumix.fnafar\",\r\n\"com.amazon.dee.app\",\r\n\"jettoast.menubutton\",\r\n\"com.themausoft.wpsapp\",\r\n\"com.twitter.android.lite\",\r\n\"com.Rohit.IndianBikes\",\r\n\"com.microsoft.xboxone.smartglass\",\r\n\"com.nextwave.wcc2\",\r\n\"com.michatapp.im\",\r\n\"com.AnatomyLearning.Anatomy3DViewer3\",\r\n\"com.cpuid.cpu_z\",\r\n\"com.PoxelStudios.DudeTheftAuto\",\r\n\"com.google.android.apps.googlevoice\",\r\n\"com.naturalmotion.customstreetracer2\",\r\n\"free.vpn.unblock.proxy.vpn.master.pro\",\r\n\"com.ea.gp.apexlegendsmobilefps\",\r\n\"com.ovelin.guitartuna\",\r\n\"com.domobile.applock\",\r\n\"com.mpl.androidapp.ps\",\r\n\"com.tumblr\",\r\n\"com.google.android.apps.restore\",\r\n\"com.roidapp.photogrid\",\r\n\"com.rovio.baba\",\r\n\"com.xxi.movie\",\r\n\"com.ericxiang.googleinstaller\",\r\n\"com.litatom.app\",\r\n\"com.outfit7.talkingtomgoldrun\",\r\n\"com.google.android.dialer\",\r\n\"com.netease.lztgglobal\",\r\n\"com.tiket.gits\",\r\n\"com.google.android.apps.magazines\",\r\n\"simplehat.clicker\",\r\n\"ru.yandex.searchplugin\",\r\n\"com.ea.game.pvz2_na\",\r\n\"com.artem.scotepio\",\r\n\"mm.cws.telenor.app\",\r\n\"com.ea.gp.fifamobilebeta\",\r\n\"com.pubg.newstate\",\r\n\"com.naver.vapp\",\r\n\"com.bigos.androdumpper\",\r\n\"com.vectorunit.purple.googleplay\",\r\n\"com.pixel.gun3d\",\r\n\"com.draco.ladb.free\",\r\n\"com.springwalk.mediaconverter\",\r\n\"ctrip.english\",\r\n\"playtv.geh\",\r\n\"com.cloudmosa.puffinFree\",\r\n\"com.skgames.trafficracer\",\r\n\"com.hiketop.app\",\r\n\"com.flatfish.cal.privacy\",\r\n\"com.ohbibi.fps\",\r\n\"com.bitstrips.imoji\",\r\n\"com.matteljv.uno\",\r\n\"com.sec.android.app.music\",\r\n\"com.ubercab.eats\",\r\n\"com.mambet.tv\",\r\n\"com.vmos.glb\",\r\n\"com.HoYoverse.hkrpgoversea\",\r\n\"com.TwentySeven.MelonPlayground\",\r\n\"com.ChillyRoom.DungeonShooter\",\r\n\"com.nordcurrent.canteenhd\",\r\n\"com.google.android.apps.nbu.files\",\r\n\"com.tencent.tmgp.cfmnac\",\r\n\"com.mindy.grap1\",\r\n\"com.lbe.parallel.intl.arm64\",\r\n\"com.starmakerinteractive.starmaker\",\r\n\"com.outfit7.mytalkingtom2\",\r\n\"com.rovio.angrybirds\",\r\n\"jp.pokemon.pokemonunite\",\r\n\"com.contextlogic.wish\",\r\n\"com.studioarm.sigma\",\r\n\"com.facebook.pages.app\"\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v3/batch_get_app_detail"
+			},
+			"response": []
+		},
+		{
+			"name": "APKPure get app related",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8d20f919-c72b-4bca-94ac-0c67f1043910",
+						"exec": [
+							"// Fetch the Pako library\r",
+							"pm.sendRequest(\"https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js\", (err, res) => {\r",
+							"    if (err) {\r",
+							"        console.error(\"Error fetching Pako library:\", err);\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    // Load the Pako library\r",
+							"    eval(res.text());\r",
+							"\r",
+							"    // Get the raw JSON payload from the Body tab\r",
+							"    const payload = pm.request.body.raw;\r",
+							"\r",
+							"    // Compress the payload with Pako (Gzip)\r",
+							"    const compressedPayload = pako.gzip(payload);\r",
+							"\r",
+							"    // Convert the compressed payload to a Base64 string\r",
+							"    const compressedBase64 = btoa(String.fromCharCode.apply(null, compressedPayload));\r",
+							"\r",
+							"    // Update the request body with the compressed payload\r",
+							"    pm.request.body.update(Buffer.from(atob(compressedBase64)));\r",
+							"\r",
+							"    // Ensure the proper Content-Encoding header is set\r",
+							"    pm.request.headers.add({\r",
+							"        key: \"Content-Encoding\",\r",
+							"        value: \"gzip\"\r",
+							"    });\r",
+							"\r",
+							"    console.log(\"Payload successfully compressed and updated!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0b820c8b-e16d-4710-b3d4-1b419e460443",
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>Field</th>\r",
+							"        <th>Value</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Title</td>\r",
+							"        <td>{{response.app_detail.title}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Package Name</td>\r",
+							"        <td>{{response.app_detail.package_name}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Version Code</td>\r",
+							"        <td>{{response.app_detail.version_code}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Version Name</td>\r",
+							"        <td>{{response.app_detail.version_name}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Review Stars</td>\r",
+							"        <td>{{response.app_detail.review_stars}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Description</td>\r",
+							"        <td>{{response.app_detail.description}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Developer</td>\r",
+							"        <td>{{response.app_detail.developer}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Show Comment Score</td>\r",
+							"        <td>{{response.app_detail.is_show_comment_score}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Price</td>\r",
+							"        <td>{{response.app_detail.price}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Introduction</td>\r",
+							"        <td>{{response.app_detail.introduction}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Category Name</td>\r",
+							"        <td>{{response.app_detail.category_name}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Permissions</td>\r",
+							"        <td>{{response.app_detail.permissions}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Off Download</td>\r",
+							"        <td>{{response.app_detail.is_off_download}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Collect</td>\r",
+							"        <td>{{response.app_detail.is_collect}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Follow</td>\r",
+							"        <td>{{response.app_detail.is_follow}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Free</td>\r",
+							"        <td>{{response.app_detail.is_free}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Ad Supported</td>\r",
+							"        <td>{{response.app_detail.is_ad_supported}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Official</td>\r",
+							"        <td>{{response.app_detail.is_official}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Ad</td>\r",
+							"        <td>{{response.app_detail.is_ad}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Show GP Icon</td>\r",
+							"        <td>{{response.app_detail.is_show_gp_icon}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is Pre Register</td>\r",
+							"        <td>{{response.app_detail.is_pre_register}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Has Version</td>\r",
+							"        <td>{{response.app_detail.has_version}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is A P K S</td>\r",
+							"        <td>{{response.app_detail.is_a_p_ks}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Is O B B</td>\r",
+							"        <td>{{response.app_detail.is_o_b_b}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Apk Type</td>\r",
+							"        <td>{{response.app_detail.apk_type}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>Rank</td>\r",
+							"        <td>{{response.app_detail.rank}}</td>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>My Score</td>\r",
+							"        <td>{{response.app_detail.my_score}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "4bb7bc97-8f35-4055-9649-16697e5b5039",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Dalvik/2.1.0 (Linux; U; Android 14; Redmi Note 7 Pro Build/AP2A.240905.003); APKPure/3.20.33 (Aegon)",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Encoding",
+						"value": "gzip",
+						"type": "text"
+					},
+					{
+						"key": "user-agent-webview",
+						"value": "Mozilla/5.0 (Linux; Android 14; Redmi Note 7 Pro Build/AP2A.240905.003; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/131.0.6778.200 Mobile Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "ual-access-businessid",
+						"value": "projecta",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"package_name\": \"com.google.android.apps.bard\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v3/get_app_relate"
+			},
+			"response": []
+		},
+		{
+			"name": "APKPure get app developer",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f7015b8f-e55b-4153-91cc-62d73d789135",
+						"exec": [
+							"// Fetch the Pako library\r",
+							"pm.sendRequest(\"https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js\", (err, res) => {\r",
+							"    if (err) {\r",
+							"        console.error(\"Error fetching Pako library:\", err);\r",
+							"        return;\r",
+							"    }\r",
+							"\r",
+							"    // Load the Pako library\r",
+							"    eval(res.text());\r",
+							"\r",
+							"    // Get the raw JSON payload from the Body tab\r",
+							"    const payload = pm.request.body.raw;\r",
+							"\r",
+							"    // Compress the payload with Pako (Gzip)\r",
+							"    const compressedPayload = pako.gzip(payload);\r",
+							"\r",
+							"    // Convert the compressed payload to a Base64 string\r",
+							"    const compressedBase64 = btoa(String.fromCharCode.apply(null, compressedPayload));\r",
+							"\r",
+							"    // Update the request body with the compressed payload\r",
+							"    pm.request.body.update(Buffer.from(atob(compressedBase64)));\r",
+							"\r",
+							"    // Ensure the proper Content-Encoding header is set\r",
+							"    pm.request.headers.add({\r",
+							"        key: \"Content-Encoding\",\r",
+							"        value: \"gzip\"\r",
+							"    });\r",
+							"\r",
+							"    console.log(\"Payload successfully compressed and updated!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "3cb8c700-b4e3-4937-80e0-2ec917d10673",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "ual-access-businessid",
+						"value": "projecta",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/v3/get_app_developer?page_no=1&page_size=10&developer_id=Level%2BInfinite&hl=en",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"v3",
+						"get_app_developer"
+					],
+					"query": [
+						{
+							"key": "page_no",
+							"value": "1"
+						},
+						{
+							"key": "page_size",
+							"value": "10"
+						},
+						{
+							"key": "developer_id",
+							"value": "Level%2BInfinite"
+						},
+						{
+							"key": "hl",
+							"value": "en"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "APKPure get app version history",
+			"id": "7ea395f8-b84b-4e05-a185-1da757687777",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "ual-access-businessid",
+						"value": "projecta",
+						"type": "text"
+					},
+					{
+						"key": "ual-access-projecta",
+						"value": "{ \"device_info\": { \"abis\": [ \"arm64-v8a\", \"armeabi-v7a\", \"armeabi\" , \"x86\", \"x86_64\"], \"android_id\": \"5f0ddefa949d96e0\", \"brand\": \"Xiaomi\", \"country\": \"India\", \"country_code\": \"IN\", \"imei\": \"\", \"language\": \"en-IN\", \"manufacturer\": \"Xiaomi\", \"mode\": \"Redmi Note 7 Pro\", \"os_ver\": \"34\", \"os_ver_name\": \"14\", \"platform\": 1, \"product\": \"afterlife_violet\", \"screen_height\": 2134, \"screen_width\": 1080 }, \"host_app_info\": { \"build_no\": \"450\", \"channel\": \"\", \"md5\": \"888a5ec5d2be509cf92d1ed49d9e0993\", \"pkg_name\": \"com.apkpure.aegon\", \"sdk_ver\": \"3.20.33\", \"version_code\": 3203347, \"version_name\": \"3.20.33\" }, \"net_info\": { \"carrier_code\": 0, \"ipv4\": \"127.0.0.1\", \"ipv6\": \"\", \"mac_address\": \"null\", \"net_type\": 1, \"use_vpn\": true, \"wifi_bssid\": \"02:00:00:00:00:00\", \"wifi_ssid\": \"\\u003cunknown ssid\\u003e\" }, \"user_info\": { \"auth_key\": \"qNKrYmW8SSUqJ73k3P2yfMxRTo3sJTR\", \"country\": \"India\", \"country_code\": \"\", \"guid\": \"\", \"language\": \"en-IN\", \"qimei\": \"2e3216b691e61d9ab716cbd310001cd19109\", \"qimei_token\": \"\", \"user_id\": \"\", \"uuid\": \"b3851183-9fef-4a3d-a61f-32f41778a253\" } }",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/v3/get_app_his_version?package_name=com.whatsapp&hl=en",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"v3",
+						"get_app_his_version"
+					],
+					"query": [
+						{
+							"key": "package_name",
+							"value": "com.whatsapp"
+						},
+						{
+							"key": "hl",
+							"value": "en"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apkpure get market category",
+			"id": "757291a8-d409-4f8a-b377-e23bdb9a3015",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "ual-access-businessid",
+						"value": "projecta",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/v3/get_market_category?blank=1&hl=en-IN",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"v3",
+						"get_market_category"
+					],
+					"query": [
+						{
+							"key": "blank",
+							"value": "1"
+						},
+						{
+							"key": "hl",
+							"value": "en-IN"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://tapi.pureapk.com",
+			"type": "default"
+		}
+	]
+}
