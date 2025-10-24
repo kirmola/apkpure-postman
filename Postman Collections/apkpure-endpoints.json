@@ -626,7 +626,6 @@
 	],
 	"variable": [
 		{
-			"id": "c2dbfa0f-22c3-4f7d-bcf8-8e92de18d55e",
 			"key": "baseURL",
 			"value": "https://tapi.pureapk.com",
 			"type": "default"
